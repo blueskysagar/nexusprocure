@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap # creating ConfigMap services for nexus procure, tells kubernetes what type of object should i create
+metadata:
+  name: nexusprocure-config # kubernetes will look up for this
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-service:5432/nexusprocure
+  SPRING_DATASOURCE_USERNAME: postgres
+  KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+  JWT_EXPIRATION: "86400000"

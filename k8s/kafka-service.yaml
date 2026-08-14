@@ -1,0 +1,15 @@
+# This Kafka-service.yaml is creating kafka service that gives your kafka node
+#a stable network address
+
+apiVersion: v1
+kind: Service # I want to create service
+metadata:
+  name: kafka
+spec:
+  selector:    # find pods that have this label and send the traffic to them
+    app: kafka
+
+  ports:
+    - port: 9092 # services door
+      targetPort: 9092 # is the Pod's door
+

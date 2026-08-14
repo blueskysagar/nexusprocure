@@ -1,0 +1,22 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nexusprocure-hpa  # name of HPA object
+spec:
+  scaleTargetRef:  # workload which replica count i am about to change
+   apiVersion: apps/v1
+   kind: Deployment # work load i am trying to scale is deployment
+   name: nexusprocure-deployment
+
+  minReplicas: 3
+  maxReplicas: 6
+
+  metrics:
+    - type: Resource # use kubernetes resource metric
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70
+
+

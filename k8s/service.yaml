@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexusprocure-service
+spec:
+  selector:     # find the pods with this label app = nexusprocure
+    app: nexusprocure
+
+  ports:
+
+    - port: 80   # port = the port exposed by the Kubernetes Service.
+      # Users/applications inside the Kubernetes cluster can access:
+      # nexusprocure-service:80
+      targetPort: 8080 #  Spring Boot runs on:
+      # 8080
+      nodePort: 30080  # nodePort = port exposed on the Kubernetes Node itself.
+      #
+      # We can access NexusProcure from outside the cluster using:
+      # http://<node-ip>:30080
+      #
+      # Kubernetes forwards:
+      # Node port 30080
+      #       ↓
+      # Service port 80
+      #       ↓
+      # Pod port 8080
+  type: NodePort #NodePort makes the Service accessible from outside
+  # the Kubernetes cluster through the Node's IP address.

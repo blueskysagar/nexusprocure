@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service # we are creating kubernetes service
+metadata:
+  name: postgres-service   # this becomes the DNS name
+spec:
+  selector:      # Service asks which pods belong to me, it finds pod with this label
+    app: postgres
+
+  ports:
+    - port: 5432 # services expose this port
+      targetPort: 5432 # applications inside this container is listening this port
+
+
+  type: ClusterIP # this service can only be accessible inside the kubernetes cluster and it is perfect for database.

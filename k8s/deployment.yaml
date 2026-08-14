@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexusprocure-deployment
+
+spec:
+  replicas: 3
+
+  selector:
+    matchLabels:
+      app: nexusprocure
+
+  template:
+    metadata:
+      labels:
+        app: nexusprocure
+
+    spec:
+      containers:
+        - name: nexusprocure
+          image: sagar1414/nexusprocure:v4
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+
+          resources:
+            requests:  # minimum resource required for the pod is reserved by kubernetes
+              cpu: "250m" #0.25 CPU Core
+              memory: "512Mi"
+
+            limits:  # maximum resource container is allowed to use
+              cpu: "500m"
+              memory: "1Gi"
+
+          envFrom:
+            - configMapRef:
+                name: nexusprocure-config
+            - secretRef:
+                name: nexusprocure-secret
+
+          startupProbe:  #is my application finished starting
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            failureThreshold: 30 # 30 failures before killing the container
+            periodSeconds: 10
+
+
+          readinessProbe: # can this nexusprocure container accept request
+             httpGet: # kubernetes will call HTTP get endpoints
+              path: /actuator/health/readiness
+              port: 8080
+
+             initialDelaySeconds: 30  # wait for 30 seconds after container starts before checking
+             periodSeconds: 10 # every 10 seconds we ask kubernetes ask are you ready
+
+
+          livenessProbe:
+              httpGet:
+                path: /actuator/health/liveness
+                port: 8080
+
+              initialDelaySeconds: 10
+              periodSeconds: 20
+
+
+
