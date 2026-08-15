@@ -228,6 +228,34 @@ Dead Letter Topic
       v
 DLT Listener
 
+## Containerization
+
+NexusProcure is containerized using Docker.
+
+The project uses a multi-stage Docker build to package the Spring Boot application into a lightweight runtime image.
+
+Docker Compose is provided for local orchestration of the application and its infrastructure dependencies.
+
+### Containerized Infrastructure
+
+- Spring Boot application
+- PostgreSQL
+- Redis
+- Apache Kafka
+ 
+NexusProcure can be deployed to Kubernetes using the provided manifests.
+
+The Kubernetes configuration includes:
+
+- Deployment with multiple replicas
+- ClusterIP Services
+- ConfigMap for non-sensitive configuration
+- Secret for sensitive configuration
+- Startup, readiness, and liveness probes
+- RollingUpdate deployment strategy
+- Horizontal Pod Autoscaler (HPA)
+- CPU-based autoscaling
+
 
 
 
