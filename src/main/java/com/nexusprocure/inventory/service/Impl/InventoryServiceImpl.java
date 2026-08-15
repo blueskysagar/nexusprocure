@@ -98,7 +98,7 @@ public class InventoryServiceImpl implements InventoryService {
    @Override
    @Cacheable(
            value = CacheNames.INVENTORY,
-           key = "nexusProcureKeyGenerator"
+           keyGenerator = "nexusProcureKeyGenerator"
    )
     @Transactional(readOnly = true)
     public InventoryResponse getInventoryById(Long id){
