@@ -257,5 +257,19 @@ The Kubernetes configuration includes:
 - CPU-based autoscaling
 
 
+## Running the Application
+
+### Prerequisites
+
+- Java 21
+- Maven
+- Docker
+- Docker Compose
+
+### Run with Maven
+
+```bash
+./mvnw spring-boot:run
+
 
 
