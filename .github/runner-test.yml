@@ -1,0 +1,15 @@
+name: Self-Hosted Runner Test
+
+on:
+  workflow_dispatch:  # we do this because we are mannually triggering it
+
+jobs:
+  runner-test:
+    runs-on: [self-hosted, nexusprocure]  # find the runner that matches both labels
+
+    steps:
+      - name: Verify Docker
+        run: docker --version
+
+      - name: Verify kubectl
+        run: kubectl version --client
