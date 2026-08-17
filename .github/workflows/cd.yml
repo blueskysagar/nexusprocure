@@ -47,7 +47,11 @@ jobs:
     steps:
       - name: Verify Kubernetes connection
         run: kubectl get nodes
+
       - name: Deploy NexusProcure
         run: kubectl set image deployment/nexusprocure-deployment nexusprocure=sagar1414/nexusprocure:${{ github.event.workflow_run.head_sha }}
+
+      - name: Record deployed Git commit
+        run: kubectl annotate deployment/nexusprocure-deployment --overwrite kubernetes.io/change-cause="Deploy commit ${{ github.event.workflow_run.head_sha }}"
       - name: Wait for rollout
         run: kubectl rollout status deployment/nexusprocure-deployment # if changed so we do roll out status and we wait till pods become healthy and ready to accept the traffic or connections.
