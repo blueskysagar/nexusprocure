@@ -10,6 +10,7 @@ jobs:
     steps:
       - name: Verify Docker
         run: docker --version
-
       - name: Verify kubectl
         run: kubectl version --client
+      - name: Verify Kubernetes connection
+        run: kubectl get nodes # can kubectl actually communicate with api server
