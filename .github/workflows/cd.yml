@@ -45,11 +45,25 @@ jobs:
     runs-on: [ self-hosted, nexusprocure ] # find self hosted runner which have both labels.
 
     steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4  # Hey github actions download/checkout the Gits repository into the runner
+        with:
+         ref: ${{ github.event.workflow_run.head_sha }} #Which exact version of the source code did that CI workflow run?"
       - name: Verify Kubernetes connection
         run: kubectl get nodes
 
-      - name: Deploy NexusProcure
-        run: kubectl set image deployment/nexusprocure-deployment nexusprocure=sagar1414/nexusprocure:${{ github.event.workflow_run.head_sha }}
+      - name: Verify Kustomize configuration  # "Can the runner access the repository's k8s/ directory and successfully generate the Kubernetes manifests?"
+        run: kubectl kustomize k8s/
+
+      - name: Set image in Kustomize
+        shell: pwsh
+        run: |
+          (Get-Content k8s/kustomization.yaml) `
+            -replace 'newTag: v4', "newTag: ${{ github.event.workflow_run.head_sha }}" `
+            | Set-Content k8s/kustomization.yaml
+
+      - name: Deploy NexusProcure with Kustomize
+        run: kubectl apply -k k8s/  # Build final manifests and apply them to cluster
 
       - name: Record deployed Git commit
         run: kubectl annotate deployment/nexusprocure-deployment --overwrite kubernetes.io/change-cause="Deploy commit ${{ github.event.workflow_run.head_sha }}"

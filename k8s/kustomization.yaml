@@ -1,0 +1,9 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization  # Hey kubernetes these are the files I want you to work with
+
+resources:   # use deployment.yaml as the resource
+   - deployment.yaml
+
+images:
+  - name: sagar1414/nexusprocure
+    newTag: v4
