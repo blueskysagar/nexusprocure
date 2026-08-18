@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: nexusprocure-deployment
 
+
+
 spec:
   replicas: 3
   progressDeadlineSeconds: 900
@@ -17,6 +19,12 @@ spec:
         app: nexusprocure
 
     spec:
+    # Give Spring Boot time to gracefully finish active requests
+    # before Kubernetes forcefully terminates the Pod.
+    # This prevents requests from being abruptly interrupted
+    # during RollingUpdate deployments.
+      terminationGracePeriodSeconds: 30
+
       containers:
         - name: nexusprocure
           image: sagar1414/nexusprocure:v4
@@ -63,6 +71,7 @@ spec:
 
               initialDelaySeconds: 10
               periodSeconds: 20
+
 
 
 
