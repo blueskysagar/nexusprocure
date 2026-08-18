@@ -5,6 +5,7 @@ metadata:
 
 spec:
   replicas: 3
+  progressDeadlineSeconds: 900
 
   selector:
     matchLabels:
@@ -25,11 +26,11 @@ spec:
 
           resources:
             requests:  # minimum resource required for the pod is reserved by kubernetes
-              cpu: "250m" #0.25 CPU Core
+              cpu: "1"    #1 CPU Core
               memory: "512Mi"
 
             limits:  # maximum resource container is allowed to use
-              cpu: "500m"
+              cpu: "2"
               memory: "1Gi"
 
           envFrom:
@@ -42,7 +43,7 @@ spec:
             httpGet:
               path: /actuator/health/liveness
               port: 8080
-            failureThreshold: 30 # 30 failures before killing the container
+            failureThreshold: 120 # 120 failures before killing the container
             periodSeconds: 10
 
 
