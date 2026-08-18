@@ -56,7 +56,7 @@ jobs:
         run: kubectl kustomize k8s/
 
       - name: Set image in Kustomize
-        shell: pwsh
+        shell: powershell
         run: |
           (Get-Content k8s/kustomization.yaml) `
             -replace 'newTag: v4', "newTag: ${{ github.event.workflow_run.head_sha }}" `
