@@ -1,8 +1,14 @@
 spring:
   application:
     name: nexusprocure
+
   lifecycle:
     timeout-per-shutdown-phase: 30s
+
+  flyway:
+    enabled: true #Spring boot run flyway when application starts
+    baseline-on-migrate: true # Does not say I don't know you for postgresql data instead it treats them as starting point.
+    baseline-version: 1 # saying the existing data is version 1
 
   datasource:
      url: ${SPRING_DATASOURCE_URL}
